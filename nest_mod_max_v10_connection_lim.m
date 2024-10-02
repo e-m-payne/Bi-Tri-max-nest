@@ -2,22 +2,25 @@
 % for work laptop
 %addpath(genpath('/Users/emilypayne/Documents/bimat_packadge'));
 
+% for mac
+addpath(genpath('/Users/emilypayne/Documents/MATLAB/github_repo'));
+
 % for epg desktop
-addpath(genpath('C:\Users\emp.payne\Documents\bimat_github_repo'));
+%addpath(genpath('C:\Users\emp.payne\Documents\bimat_github_repo'));
 
 % Read the bipartite matrix from the Excel file
-matrix = readmatrix('9bus bipartite matrices.xlsx', 'Sheet', 'WSCC9 Grid Original Matrix All', 'Range', 'B2:P43');
+matrix = readmatrix('9bus bipartite matrices.xlsx', 'Sheet', 'WSCC9 Grid Original Matrix All', 'Range', 'B2:P22');
 
 % Initialize variables
 [m, n] = size(matrix);  
 outputData = [];  % Initialize outputData to store results
 
 % Define max connections for specific row and column ranges
-maxConnectionsRowRange1 = 4;  % Max 4 connections for rows 1-21
-maxConnectionsRowRange2 = 9;  % Max 9 connections for rows 28-42
-maxConnectionsRow40to42 = 6;  % Max 6 connections for rows 40-42
-maxConnectionsColumns1to9 = 10;  % Max 10 connections for columns 1-9
-maxConnectionsColumns13to15 = 8;  % Max 8 connections for columns 13-15
+maxConnectionsRowRange1 = 7;  % Max 7 connections for rows 1-21
+maxConnectionsRowRange2 = 0;  % Max 0 connections for rows 28-42
+maxConnectionsRow40to42 = 0;  % Max 0 connections for rows 40-42
+maxConnectionsColumns1to9 = 7;  % Max 7 connections for columns 1-9
+maxConnectionsColumns13to15 = 2;  % Max 2 connections for columns 13-15
 
 % Loop to add all possible connections one by one
 while true
@@ -36,7 +39,7 @@ while true
                 elseif i >= 40 && i <= 42
                     maxConnectionsPerRow = maxConnectionsRow40to42;  % Max 6 for rows 40-42
                 else
-                    maxConnectionsPerRow = inf;  % No limit for other rows
+                    maxConnectionsPerRow = 0;  % No limit for other rows
                 end
 
                 % Determine the max connections allowed for the current column
@@ -45,7 +48,7 @@ while true
                 elseif j >= 13 && j <= 16
                     maxConnectionsPerColumn = maxConnectionsColumns13to15;  % Max 8 for columns 13-15
                 else
-                    maxConnectionsPerColumn = inf;  % No limit for other columns
+                    maxConnectionsPerColumn = 3;  % No limit for other columns
                 end
 
                 % Check row and column constraints before adding the connection
@@ -75,7 +78,7 @@ while true
     [Qb, Qr, NODF_N, NODF_cols, NODF_rows, Num_mod] = computeQbAndMetrics(matrix);
 
     % Save the matrix for this step
-    matrixFilename = ['9bus_normal_optim_lim_matrix_step_', num2str(size(outputData, 1) + 1), '.xlsx'];
+    matrixFilename = ['9bus_bipartite_optimization_v2_', num2str(size(outputData, 1) + 1), '.xlsx'];
     writematrix(matrix, matrixFilename);
     disp(['Matrix saved to ', matrixFilename]);
 
@@ -93,7 +96,7 @@ headers = {'Row', 'Column', 'Qb', 'Qr', 'NODF_N', 'bestNODF', 'NODF_cols', 'NODF
 combinedData = [headers; num2cell(outputData)];
 
 % Save the combined data to an Excel file
-resultsFilename = '9bus_normal_optim_lim_connection_results.xlsx';
+resultsFilename = '9bus_bipartite_optimization_v2_.xlsx';
 writecell(combinedData, resultsFilename);
 disp(['Results saved to ', resultsFilename]);
 
