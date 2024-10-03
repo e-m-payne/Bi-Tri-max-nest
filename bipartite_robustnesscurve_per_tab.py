@@ -82,10 +82,14 @@ def plot_robustness_curve(robustness_curve, sheet_name):
 # Main execution for processing multiple sheets and exporting results
 if __name__ == "__main__":
     # Path to your Excel file
-    file_path = 'Copy of 9bus_normal_optim_lim_matrix_step_145.xlsx'
+    #file_path = '9bus bipartite matrices.xlsx'
+    #file_path = '9bus_bipartite_optimization_v2_42.xlsx'
+    file_path = '9bus bipartite remote relay protection.xlsx'
+
     
     # List of sheet names to process
-    sheet_names = ['normal', 'ds1', 'ds2', 'ds3', 'ds5', 'ds7', 'ds8', 'ds9']  # Add more sheet names as needed
+    #sheet_names = ['normal', 'ds1', 'ds2', 'ds3', 'ds5', 'ds7', 'ds8', 'ds9']  # Add more sheet names as needed
+    sheet_names = ['normal', 'DS1', 'DS2', 'DS3', 'DS5', 'DS7', 'DS8', 'DS9']  # Add more sheet names as needed
 
     all_results = pd.DataFrame()  # Initialize empty DataFrame to store all results
 
@@ -105,7 +109,8 @@ if __name__ == "__main__":
         all_results = pd.concat([all_results, sheet_results], ignore_index=True)
 
     # Export all results to a new Excel file
-    output_file = '9bus_NAPS_robustness_elimination_results.xlsx'
+    output_file = '9bus bipartite remote relay protection_robustnesscurve.xlsx'
+    #output_file = '9bus_bipartite_optimization_v2_42_robustnesscurve.xlsx'
     all_results.to_excel(output_file, index=False)
 
     print(f"All elimination results have been saved to {output_file}")
